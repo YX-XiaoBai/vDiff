@@ -14,7 +14,6 @@ program
   .configureOutput({
     writeOut: (str) => process.stdout.write(`[OUT]: ${str}`),
     writeErr: (str) => process.stdout.write(`[ERR]: ${str}`),
-    // Output errors in red.
     outputError: (str, write) => write(errorColor(str))
   })
 
@@ -22,8 +21,11 @@ program
   .usage('[options]')
   .version('0.0.1', '-v, --version', 'output the current version')
   .description('Description:\n  A ViewDiff Tool\n\nAuthor:\n  YX-XiaoBai')
-  // .option('-ucu, --urlCompareUrl <value>..</value>', 'url compare url')
 
+/**
+ * @command
+ * @usage diffUrl <url> <url2>
+ */
 program
   .command('diffUrl <url> <url2>')
   .description('input two urls, contrast visual differences.')
@@ -31,6 +33,10 @@ program
     urlCompareUrl(url, url2)
   })
 
+/**
+ * @command
+ * @usage diffUrl <path> <path>
+ */
 program
   .command('diffPath <path> <path>')
   .description('input two paths, contrast visual differences.')
@@ -38,6 +44,10 @@ program
     pathComparePath(path, path)
 })
 
+/**
+ * @command
+ * @usage diffPU <path> <url>
+ */
 program
   .command('diffPU <path> <url>')
   .description('input one path and one url, contrast visual differences.')

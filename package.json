@@ -2,7 +2,7 @@
   "name": "viewDiff",
   "bin": "./index.js",
   "version": "1.0.0",
-  "description": "",
+  "description": "A view visual diff tool",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -23,5 +23,17 @@
     "cli-table": "^0.3.6",
     "ora": "^5.4.0",
     "prettier": "^2.2.1"
+  },
+  "jest": {
+    "rootDir": "src",
+    "transform": {
+      "^.+\\.js$": "bebel-jest"
+    },
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+  "engines": {
+    "node": ">=10.0"
   }
 }

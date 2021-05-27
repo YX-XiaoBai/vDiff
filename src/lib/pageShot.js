@@ -1,41 +1,70 @@
 const puppeteer = require('puppeteer'),
-    logger = require('../config/log'),
-    getSalt = require('./getSalt')
-var imgBase = __dirname + '/../../pageShot/',
-    imgType = '.png',
-    random = getSalt()
+    logger = require('../config/log')
+
+const {
+  ERROR,
+  WARNING,
+  REMIND,
+  PASS,
+  IMAGE_TYPE,
+} = require('./config/constants')
+
+const {
+  head,
+  isStr
+} = require('./utils/utils')
+
+const {
+  rootExist,
+  urlEmpty
+} = require('./validation/pathValidation')
+
+var imgBase = __dirname + '/pageShot/'
+
+var random = getSalt()
+const imgType = head(IMAGE_TYPE)
 
 /**
- * function type: async
- * param: url
+ * Get the screenshot on page
+ *
+ * @method async
+ * @param string
+ * @returns *
  */
 module.exports = async function pageShot(url) {
+  rootExist(imgBase)
   /**
    * Deal with the scene with empty URL
    */
-  if ( !url || url == null || url.length === 0 || /^\s*$/.test(url) ) {
-    logger.error('Url is cannot be empty!')
-    return
-  }
+  urlEmpty(url)
+  // if ( !url || url == null || url.length === 0 || /^\s*$/.test(url) ) {
+  //   logger.error('Url is cannot be empty!')
+  //   return
+  // }
   /**
    * Meet the conditions
    */
-  if (typeof url === 'string') {
+  if (isStr(url)) {
+    /**
+     * Define default path variables
+     * imageUrl: Picture screenshot path
+     */
+    var shotPath = imgBase + 'PageShot_' + random + imgType
     const browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     try {
       await page.setViewport({ width: 1920, height: 945 })
       await page.goto(url)
-      await page.screenshot({ path: imgBase + 'PageShot_' + random + imgType, fullPage: true})
+      await page.screenshot({ path: shotPath, fullPage: true})
       await page.close()
-      logger.info('Image captured successfully!')
+      logger.info('Image ' + REMIND(`${shotPath}`) + ' captured successfully!')
       return
     } catch(error) {
-      logger.error('Image captured failed!')
+      logger.error('Image ' + ERROR(`${shotPath}`) + ' captured failed!')
       throw error
     }
   } else {
-    logger.error('Input url format error!')
+    logger.error('Input url ' + ERROR(`${url}`) + ' format error!')
     return
   }
 }

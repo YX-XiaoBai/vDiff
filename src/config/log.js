@@ -22,7 +22,6 @@ log4js.configure({
             level: 'INFO'
         }
     },
-    // "pm2": true
 });
 
 const logger = log4js.getLogger();
