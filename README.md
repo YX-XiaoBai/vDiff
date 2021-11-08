@@ -1,5 +1,7 @@
 # viewDiff
 
+一款搞笑的视觉对比工具
+
 ## Example
 
 ```sh
